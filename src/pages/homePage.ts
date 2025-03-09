@@ -1,4 +1,4 @@
-import { Page } from "@playwright/test";
+import { Page, expect } from "@playwright/test";
 import { BasePage } from "@pages/basePage";
 import { HeaderMenu } from "@components/headerMenu";
 
@@ -16,5 +16,9 @@ export class HomePage extends BasePage {
      */
     async clickHeaderMenu(menu: headerMenuList) {
         await this.headerMenu.clickHeaderMenu(menu);
+    }
+
+    async assertLogoutSuccess() {
+        await expect(this.page).toHaveURL('index.html?');
     }
 }
