@@ -2,8 +2,6 @@ import { Page, Locator, expect } from "@playwright/test";
 import { BasePage } from "@pages/basePage";
 import { HeaderMenu } from "@components/headerMenu";
 
-type input = "email" | "password";
-
 export class LoginPage extends BasePage {
     private readonly headerMenu: HeaderMenu;
 
@@ -19,8 +17,8 @@ export class LoginPage extends BasePage {
         this.input_email = page.getByLabel('メールアドレス');
         this.input_password = page.getByLabel('パスワード');
         this.button_login = page.locator('#login-button');
-        this.text_error_message_email = page.locator('#email-error');
-        this.text_error_message_password = page.locator('#password-error');
+        this.text_error_message_email = page.locator('#email-message');
+        this.text_error_message_password = page.locator('#password-message');
     }
 
     /**
@@ -48,7 +46,7 @@ export class LoginPage extends BasePage {
      * @param input - エラーメッセージを取得する入力項目
      * @returns エラーメッセージ
      */
-    private async getErrorMessage(input: input) {
+    private async getErrorMessage(input: errorField) {
         switch (input) {
             case "email":
                 return await this.text_error_message_email.textContent();
@@ -65,7 +63,7 @@ export class LoginPage extends BasePage {
      * @param expectedMessage - 期待するエラーメッセージ
      * @returns エラーメッセージに期待するエラーメッセージが表示されているか
      */
-    async assertErrorMessageHasExpectedMessage(input: input, expectedMessage: string) {
+    async assertErrorMessageHasExpectedMessage(input: errorField, expectedMessage: string) {
         const errorMessage = await this.getErrorMessage(input);
         expect(errorMessage).toContain(expectedMessage);
     }
