@@ -1,27 +1,13 @@
 import { Page } from "@playwright/test";
+import { BasePage } from "@pages/basePage";
 import { HeaderMenu } from "@components/headerMenu";
 
-export class HomePage {
+export class HomePage extends BasePage {
     private readonly headerMenu: HeaderMenu;
 
-    constructor(private page: Page) {
+    constructor(page: Page) {
+        super(page);
         this.headerMenu = new HeaderMenu(page);
-    }
-
-    /**
-     * ホームページの初期化
-     * @param page - Playwrightのページオブジェクト
-     * @returns ホームページのインスタンス
-     * @throws ホームページでない場合にエラーをスロー
-     */
-    async init(page: Page) {
-        const expectedUrls = ["/", "index.html"];
-        await page.waitForLoadState('networkidle');
-        const currentUrl = this.page.url();
-        if (!expectedUrls.some(url => currentUrl.includes(url))) {
-            throw new Error(`${currentUrl} is not the home page`);
-        }
-        return this;
     }
 
     /**
@@ -32,4 +18,3 @@ export class HomePage {
         await this.headerMenu.clickHeaderMenu(menu);
     }
 }
-

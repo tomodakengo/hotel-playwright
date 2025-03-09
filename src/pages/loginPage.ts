@@ -1,15 +1,21 @@
 import { Page, Locator, expect } from "@playwright/test";
+import { BasePage } from "@pages/basePage";
+import { HeaderMenu } from "@components/headerMenu";
 
 type input = "email" | "password";
 
-export class LoginPage {
+export class LoginPage extends BasePage {
+    private readonly headerMenu: HeaderMenu;
+
     private readonly input_email: Locator;
     private readonly input_password: Locator;
     private readonly button_login: Locator;
     private readonly text_error_message_email: Locator;
     private readonly text_error_message_password: Locator;
 
-    constructor(private page: Page) {
+    constructor(page: Page) {
+        super(page);
+        this.headerMenu = new HeaderMenu(page);
         this.input_email = page.getByLabel('メールアドレス');
         this.input_password = page.getByLabel('パスワード');
         this.button_login = page.getByRole('button', { name: 'ログイン' });
@@ -18,19 +24,11 @@ export class LoginPage {
     }
 
     /**
-     * ログインページの初期化
-     * @param page - Playwrightのページオブジェクト
-     * @returns ログインページのインスタンス
-     * @throws ログインページでない場合にエラーをスロー
+     * ヘッダーメニューのクリック
+     * @param menu - クリックするメニュー項目
      */
-    async init(page: Page) {
-        const expectedUrls = "/login.html";
-        await page.waitForLoadState('networkidle');
-        const currentUrl = this.page.url();
-        if (!currentUrl.includes(expectedUrls)) {
-            throw new Error(`${currentUrl} is not the login page`);
-        }
-        return this;
+    async clickHeaderMenu(menu: headerMenuListWithoutAuth) {
+        await this.headerMenu.clickHeaderMenu(menu);
     }
 
     /**

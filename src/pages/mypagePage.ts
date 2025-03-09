@@ -1,24 +1,24 @@
-import { Page } from "@playwright/test";
-import { HeaderMenu } from "./components/headerMenu";
+import { expect, Page } from "@playwright/test";
+import { BasePage } from "@pages/basePage";
+import { HeaderMenu } from "@components/headerMenu";
 
-export class MypagePage {
+export class MypagePage extends BasePage {
     private readonly headerMenu: HeaderMenu;
 
-    constructor(private page: Page) {
+    constructor(page: Page) {
+        super(page);
         this.headerMenu = new HeaderMenu(page);
     }
 
-    async init(page: Page) {
-        const expectedUrls = "mypage.html";
-        await page.waitForLoadState('networkidle');
-        const currentUrl = this.page.url();
-        if (!currentUrl.includes(expectedUrls)) {
-            throw new Error(`${currentUrl} is not the mypage page`);
-        }
-        return this;
+    /**
+     * ヘッダーメニューのクリック
+     * @param menu - クリックするメニュー項目
+     */
+    async clickHeaderMenu(menu: headerMenuListWithAuth) {
+        await this.headerMenu.clickHeaderMenu(menu);
     }
 
-    async clickHeaderMenu(menu: headerMenuList) {
-        await this.headerMenu.clickHeaderMenu(menu);
+    async assertLoginSuccess() {
+        await expect(this.page).toHaveURL("mypage.html");
     }
 }
