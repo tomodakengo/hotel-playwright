@@ -1,15 +1,19 @@
 {
   "name": "hotel-playwright",
   "version": "1.0.0",
-  "description": "",
+  "description": "Playwright test for hotel planisphere",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "test": "node -r tsconfig-paths/register node_modules/@playwright/test/cli.js test"
+  },
   "keywords": [],
-  "author": "",
+  "author": "Tomoda Kengo",
   "license": "ISC",
   "type": "commonjs",
   "devDependencies": {
     "@playwright/test": "^1.51.0",
-    "@types/node": "^22.13.10"
+    "@types/node": "^22.13.10",
+    "tsconfig-paths": "^4.2.0",
+    "typescript": "^5.8.2"
   }
 }
