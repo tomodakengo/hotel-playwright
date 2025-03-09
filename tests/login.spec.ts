@@ -90,4 +90,36 @@ test.describe('ログイン機能', () => {
             }
         });
     }
+
+    /**
+     * 1-3 ログアウト
+     */
+    const logoutUsers = {
+        email: 'ichiro@example.com',
+        password: 'password'
+    };
+
+    const logoutFromPages = ['ホーム', '宿泊予約', 'マイページ'];
+
+    for (const logoutFromPage of logoutFromPages) {
+        test(`ログアウト: ${logoutFromPage}`, async ({ homePage, loginPage, mypagePage, plansPage }) => {
+            await homePage.clickHeaderMenu('ログイン');
+            await loginPage.login(logoutUsers.email, logoutUsers.password);
+            await mypagePage.clickHeaderMenu(logoutFromPage as headerMenuListWithAuth);
+            switch (logoutFromPage) {
+                case 'ホーム':
+                    await homePage.clickHeaderMenu('ログアウト');
+                    break;
+                case '宿泊予約':
+                    await plansPage.clickHeaderMenu('ログアウト');
+                    break;
+                case 'マイページ':
+                    await mypagePage.clickHeaderMenu('ログアウト');
+                    break;
+                default:
+                    throw new Error('ログアウトページが指定されていません。');
+            }
+            await homePage.assertLogoutSuccess();
+        });
+    }
 });
