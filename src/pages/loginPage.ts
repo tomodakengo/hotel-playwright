@@ -18,7 +18,7 @@ export class LoginPage extends BasePage {
         this.headerMenu = new HeaderMenu(page);
         this.input_email = page.getByLabel('メールアドレス');
         this.input_password = page.getByLabel('パスワード');
-        this.button_login = page.getByRole('button', { name: 'ログイン' });
+        this.button_login = page.locator('#login-button');
         this.text_error_message_email = page.locator('#email-error');
         this.text_error_message_password = page.locator('#password-error');
     }
